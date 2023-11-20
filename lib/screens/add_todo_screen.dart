@@ -1,7 +1,29 @@
 import 'package:flutter/material.dart';
 
-class AddTodoScreen extends StatelessWidget {
-  const AddTodoScreen({super.key});
+class AddTodoScreen extends StatefulWidget {
+   const AddTodoScreen({super.key});
+
+  @override
+  State<AddTodoScreen> createState() => _AddTodoScreenState();
+}
+
+class _AddTodoScreenState extends State<AddTodoScreen> {
+  final textController = TextEditingController();
+
+  void onSubmit(){
+var todo = textController.text;
+Navigator.of(context).pop(todo);
+
+  }
+
+// DisposableBuildContext
+@override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    textController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,13 +35,14 @@ class AddTodoScreen extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            const TextField(
-              decoration: InputDecoration(
+             TextField(
+              decoration: const InputDecoration(
                 labelText: 'add Todo',
               ),
+              controller: textController,
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed:onSubmit,
               child: const Text('Add'),
             ),
           ],

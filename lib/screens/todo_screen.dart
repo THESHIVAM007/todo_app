@@ -9,27 +9,49 @@ class TodoScreen extends StatefulWidget {
 }
 
 class _TodoScreenState extends State<TodoScreen> {
-  final List<String> _todosList = [
-    'todo 1',
-    'todo 2',
-    'todo 3',
-    'todo 4',
-    'todo 5',
-  ];
-  void onClickAdd() {
-    Navigator.of(context).push(
+  final List<String> _todosList = [];
+  void onClickAdd() async {
+    var newTodo = await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => const AddTodoScreen(),
       ),
     );
+    setState(() {
+      _todosList.add(newTodo);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // Widget content = const Center(
-    //   child: Text('no todo added'),
-    // );
+    Widget content = const Center(
+      child: Text('no todo added'),
+    );
 
+    if (_todosList.isNotEmpty) {
+      content = ListView.builder(
+        padding: const EdgeInsets.all(8),
+        itemCount: _todosList.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Dismissible(
+            background: Container(color: Colors.red,child: const Text('Delete'),),
+            onDismissed: (direction) {
+              
+              setState(() {
+                _todosList.removeAt(index);
+              });
+            },
+            key: ValueKey(index),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              margin: const EdgeInsets.all(12),
+              height: 50,
+              color: Colors.amber,
+              child: Center(child: Text(_todosList[index])),
+            ),
+          );
+        },
+      );
+    }
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.purple,
@@ -38,17 +60,6 @@ class _TodoScreenState extends State<TodoScreen> {
             IconButton(onPressed: onClickAdd, icon: const Icon(Icons.add))
           ],
         ),
-        body: ListView.builder(
-            padding: const EdgeInsets.all(8),
-            itemCount: _todosList.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                padding: const EdgeInsets.all(12),
-                margin: const EdgeInsets.all(12),
-                height: 50,
-                color: Colors.amber,
-                child: Center(child: Text(_todosList[index])),
-              );
-            }));
+        body: content);
   }
 }
