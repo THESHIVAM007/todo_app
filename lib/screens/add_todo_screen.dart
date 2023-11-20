@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
+// import 'package:riverpod/riverpod.dart';
+// import 'flutterriv';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_app/provider/todo_provider.dart';
 
-class AddTodoScreen extends StatefulWidget {
+
+class AddTodoScreen extends ConsumerStatefulWidget {
    const AddTodoScreen({super.key});
 
   @override
-  State<AddTodoScreen> createState() => _AddTodoScreenState();
+  ConsumerState<AddTodoScreen> createState() => _AddTodoScreenState();
 }
 
-class _AddTodoScreenState extends State<AddTodoScreen> {
+class _AddTodoScreenState extends ConsumerState<AddTodoScreen> {
   final textController = TextEditingController();
 
-  void onSubmit(){
-var todo = textController.text;
-Navigator.of(context).pop(todo);
-
-  }
+  void onSubmit() {
+  var todo = textController.text;
+  ref.read(todoListProvider.notifier).add(todo);
+  Navigator.of(context).pop(); // Corrected: Add parentheses to pop method
+}
 
 // DisposableBuildContext
 @override

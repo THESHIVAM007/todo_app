@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/todo_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// final ProviderScope fi
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

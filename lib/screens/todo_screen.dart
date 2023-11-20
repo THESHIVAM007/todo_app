@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_app/provider/todo_provider.dart';
 import 'package:todo_app/screens/add_todo_screen.dart';
 
-class TodoScreen extends StatefulWidget {
+class TodoScreen extends ConsumerStatefulWidget {
   const TodoScreen({super.key});
 
   @override
-  State<TodoScreen> createState() => _TodoScreenState();
+  ConsumerState<TodoScreen> createState() => _TodoScreenState();
 }
 
-class _TodoScreenState extends State<TodoScreen> {
-  final List<String> _todosList = [];
-  void onClickAdd() async {
-    var newTodo = await Navigator.of(context).push(
+class _TodoScreenState extends ConsumerState<TodoScreen> {
+  List<String> _todosList = [];
+  void onClickAdd() {
+    Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => const AddTodoScreen(),
       ),
     );
-    setState(() {
-      _todosList.add(newTodo);
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    _todosList = ref.watch(todoListProvider);
+
     Widget content = const Center(
       child: Text('no todo added'),
     );
@@ -33,12 +34,12 @@ class _TodoScreenState extends State<TodoScreen> {
         itemCount: _todosList.length,
         itemBuilder: (BuildContext context, int index) {
           return Dismissible(
-            background: Container(color: Colors.red,child: const Text('Delete'),),
+            background: Container(
+              color: Colors.red,
+              child: const Text('Delete'),
+            ),
             onDismissed: (direction) {
-              
-              setState(() {
-                _todosList.removeAt(index);
-              });
+              ref.read(todoListProvider.notifier).remove(_todosList[index]);
             },
             key: ValueKey(index),
             child: Container(
