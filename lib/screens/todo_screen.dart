@@ -63,11 +63,8 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
               child: const Text('Delete'),
             ),
             onDismissed: (direction) {
-              ref.read(todoListProvider.notifier).remove(todosList[index]);
-              setState(() {
-                // Ensure that the widget is immediately removed from the tree
-                todosList.removeAt(index);
-              });
+              var removedTodo = todosList[index];
+              ref.read(todoListProvider.notifier).remove(removedTodo);
               _saveTodoList(todosList);
             },
             key: ValueKey(index),
