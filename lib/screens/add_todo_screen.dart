@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/provider/todo_provider.dart';
 
-
 class AddTodoScreen extends ConsumerStatefulWidget {
-   const AddTodoScreen({super.key});
+  const AddTodoScreen({super.key});
 
   @override
   ConsumerState<AddTodoScreen> createState() => _AddTodoScreenState();
@@ -16,16 +15,13 @@ class _AddTodoScreenState extends ConsumerState<AddTodoScreen> {
   final textController = TextEditingController();
 
   void onSubmit() {
-  var todo = textController.text;
-  ref.read(todoListProvider.notifier).add(todo);
-  Navigator.of(context).pop(); // Corrected: Add parentheses to pop method
-}
+    var todo = textController.text;
+    ref.read(todoListProvider.notifier).add(todo);
+    Navigator.of(context).pop();
+  }
 
-// DisposableBuildContext
-@override
+  @override
   void dispose() {
-    // Clean up the controller when the widget is removed from the
-    // widget tree.
     textController.dispose();
     super.dispose();
   }
@@ -40,14 +36,14 @@ class _AddTodoScreenState extends ConsumerState<AddTodoScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-             TextField(
+            TextField(
               decoration: const InputDecoration(
                 labelText: 'add Todo',
               ),
               controller: textController,
             ),
             ElevatedButton(
-              onPressed:onSubmit,
+              onPressed: onSubmit,
               child: const Text('Add'),
             ),
           ],
